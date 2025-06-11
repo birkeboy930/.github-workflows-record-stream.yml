@@ -1,12 +1,12 @@
 name: EU Stream Recording
 schedule:
-  - cron: '0 10 * * *'  # Kör varje dag kl 12:00 svensk tid
+ - cron: '5 8 * * 1-5'  # Kör vardagar kl 10:05 svensk tid (8:05 UTC)
   workflow_dispatch:      # Tillåt manuell körning
 
 jobs:
   record-audio:
     runs-on: ubuntu-latest
-    timeout-minutes: 70
+    timeout-minutes: 5
     
     steps:
     - uses: actions/checkout@v4
