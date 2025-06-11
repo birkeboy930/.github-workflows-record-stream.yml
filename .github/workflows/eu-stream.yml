@@ -1,12 +1,39 @@
 name: EU Stream Recording
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * *'  # Kör varje dag kl 12:00 UTC
+  workflow_dispatch:      # Tillåt manuell körning
 
 jobs:
-  test:
+  record-audio:
     runs-on: ubuntu-latest
+    timeout-minutes: 70
+    
     steps:
     - uses: actions/checkout@v4
-    - name: Test
-      run: echo "Hello World - EU Stream Recorder works!"
+    
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install FFmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+    
+    - name: Create recordings directory
+      run: mkdir -p recordings
+    
+    - name: Record EU Stream
+      env:
+        STREAM_URL: https://audiovisual.ec.europa.eu/en/ebs/live/2
+      run: |
+        python recorder.py
+    
+    - name: Upload recording
+      uses: actions/upload-artifact@v4
+      with:
+        name: eu-stream-recording-${{ github.run_number }}
+        path: recordings/
+        retention-days: 30
