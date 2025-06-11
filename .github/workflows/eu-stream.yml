@@ -1,6 +1,6 @@
 name: EU Stream Recording
 schedule:
- - cron: '5 8 * * 1-5'  # Kör vardagar kl 10:05 svensk tid (8:05 UTC)
+ - cron: '10 8 * * 1-5'  # Kör vardagar kl 10:05 svensk tid (8:05 UTC)
   workflow_dispatch:      # Tillåt manuell körning
 
 jobs:
